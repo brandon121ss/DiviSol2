@@ -25,5 +25,8 @@ public class proyectoFinal{
         nombre_usuario.setBounds(50, 180, 200, 30);
         textField.setBounds(200, 160, 200, 30);
 
+        frame.add(etiqueta_anuncio);
+        frame.add(etiqueta_2);
+        frame.add(etiqueta_3);
     }
 }
