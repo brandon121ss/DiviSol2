@@ -24,5 +24,6 @@ public class proyectoFinal{
         button.setBounds(30, 90, 100, 30);
         nombre_usuario.setBounds(50, 180, 200, 30);
         textField.setBounds(200, 160, 200, 30);
+
     }
 }
