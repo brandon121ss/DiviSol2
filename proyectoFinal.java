@@ -28,5 +28,10 @@ public class proyectoFinal{
         frame.add(etiqueta_anuncio);
         frame.add(etiqueta_2);
         frame.add(etiqueta_3);
+        frame.add(etiqueta_4);
+        frame.add(button);
+        frame.add(nombre_usuario);
+
+        frame.setVisible(true);
     }
 }
