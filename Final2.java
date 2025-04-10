@@ -1,37 +1,42 @@
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.Color;
-import java.awt.FlowLayout;
+import javax.swing.*; //crear interfaces gráficas,para la creacin de las venatanas
+import java.awt.event.ActionEvent;//Representa un evento, como cuando se la da click al boton
+import java.awt.event.ActionListener;//permite escuchar y responder a eventos de acción(Como cuando se presiona un boton)
+import java.awt.Color;//Usar colores
+import java.awt.FlowLayout;//
 import java.awt.Font; //darle estilo al texto de componentes gráficos
-import java.util.ArrayList;
-import javax.swing.table.DefaultTableModel;
-import java.awt.BorderLayout;
+import java.util.ArrayList; //Una lista dinámica, parecida a un arreglo, pero más flexible.
+import javax.swing.table.DefaultTableModel; //Un modelo de datos para una tabla
+import java.awt.BorderLayout;//Es un administrador de diseño para organizar componentes en un contenedor
 
 public class Final2 {
     
 
     static class Producto {
+
+        //Variables
         private int numero;
         private String nombre;
         private double precio;
         private int cantidad;
 
+        //Constructor.(Recibe los valores iniciales y los guarda)
         public Producto(int numero, String nombre, double precio, int cantidad) {
             this.numero = numero;
             this.nombre = nombre;
             this.precio = precio;
             this.cantidad = cantidad;
         }
-
+        //Metodo get (permiten consultar los valores de cada producto desde fuera de la clase.)
         public int getNumero() { return numero; }
         public String getNombre() { return nombre; }
         public double getPrecio() { return precio; }
         public int getCantidad() { return cantidad; }
     }
 
-    static ArrayList<Producto> listaProductos = new ArrayList<>();
-    static DefaultTableModel modeloTabla;
+    static ArrayList<Producto> listaProductos = new ArrayList<>();  //ArrayList<Producto>: es una lista que guarda objetos del tipo Producto.
+
+
+    static DefaultTableModel modeloTabla; //representa los datos de una tabla 
 
 
 
@@ -107,8 +112,8 @@ public class Final2 {
 
 
         // Acción al presionar el botón
-        botonAbrirVentana2.addActionListener(new ActionListener() {
-            @Override
+        botonAbrirVentana2.addActionListener(new ActionListener() {   //Este bloque define qué va a pasar cuando se presione el 
+            @Override                                                 //botón. Dentro de este bloque escribimos las instrucciones
             public void actionPerformed(ActionEvent e) {
                 
                 // Crear y mostrar la ventana 2
@@ -121,11 +126,11 @@ public class Final2 {
                 
                 //Crear botones de menu
                 JButton Inventario = new JButton("Inventario");
-                Inventario.setBounds(70,200,200,50);
+                Inventario.setBounds(70,100,200,50);
                 Inventario.setBackground(Color.RED);
                 Inventario.setForeground(Color.WHITE);       
                 JButton Config = new JButton("Configuracion");
-                Config.setBounds(10,100,150,40);
+                Config.setBounds(70,200,200,50);
                 Config.setBackground(Color.red);
                 Config.setForeground(Color.WHITE);       
                 JButton DevyRe = new JButton("Devloluciones y reclamaciones");
@@ -178,12 +183,55 @@ public class Final2 {
                         }
                          ventanaInv.add(panelBotones, BorderLayout.SOUTH);
 
-                    btnAgregar.addActionListener(x -> {
-                    Producto nuevo = new Producto(1, "Producto X", 10.0, 5);
-                    listaProductos.add(nuevo);
-                    modeloTabla.addRow(new Object[]{nuevo.getNumero(), nuevo.getNombre(), nuevo.getPrecio(), nuevo.getCantidad()});
-                });
-
+                         //Accion de agregar
+                         //
+                         btnAgregar.addActionListener(new ActionListener() {   //Este bloque define qué va a pasar cuando se presione el 
+                            public void actionPerformed(ActionEvent e) {       //botón. Dentro de este bloque escribimos las instrucciones
+                                int num = listaProductos.size() + 1;
+                                Producto productoNuevo = new Producto(num, "Producto X", 10.0, 5);
+                                listaProductos.add(productoNuevo);
+                                modeloTabla.addRow(new Object[]{
+                                    productoNuevo.getNumero(), productoNuevo.getNombre(),
+                                    productoNuevo.getPrecio(), productoNuevo.getCantidad()
+                                });
+                            }
+                        });
+                         //Accion de eliminar
+                         btnEliminar.addActionListener(x -> {
+                            int fila = tabla.getSelectedRow();
+                            if (fila != -1) {
+                                listaProductos.remove(fila);
+                                modeloTabla.removeRow(fila);
+                            } else {
+                                JOptionPane.showMessageDialog(ventanaInv, "Selecciona un producto para eliminar.");
+                            }
+                        });
+                                //Accci0on editar
+                                btnEditar.addActionListener(x -> {
+                                    int fila = tabla.getSelectedRow();
+                                    if (fila != -1) {
+                                        Producto p = listaProductos.get(fila);
+                        
+                                        String nuevoNombre = JOptionPane.showInputDialog("Nuevo nombre:", p.getNombre());
+                                        String nuevoPrecio = JOptionPane.showInputDialog("Nuevo precio:", p.getPrecio());
+                                        String nuevaCantidad = JOptionPane.showInputDialog("Nueva cantidad:", p.getCantidad());
+                        
+                                        try {
+                                            p.nombre = nuevoNombre;
+                                            p.precio = Double.parseDouble(nuevoPrecio);
+                                            p.cantidad = Integer.parseInt(nuevaCantidad);
+                        
+                                            modeloTabla.setValueAt(p.getNombre(), fila, 1);
+                                            modeloTabla.setValueAt(p.getPrecio(), fila, 2);
+                                            modeloTabla.setValueAt(p.getCantidad(), fila, 3);
+                                        } catch (Exception ex) {
+                                            JOptionPane.showMessageDialog(ventanaInv, "Precio o cantidad inválidos.");
+                                        }
+                                    } else {
+                                        JOptionPane.showMessageDialog(ventanaInv, "Selecciona un producto para editar.");
+                                    }
+                                });
+                        
                        
                         
 
@@ -262,11 +310,6 @@ public class Final2 {
                         ventanaCont.setLocation(970, 250);
                         ventanaCont.setLayout(null);
                         ventanaCont.getContentPane().setBackground(Color.black);
-
-                        ImageIcon imagen = new ImageIcon("C:/Users/Brandon/Downloads/233.jpg");
-                        Image img = imagen.getImage("233.jpg"); // Obtener la imagen original
-                        Image nuevaImagen = img.getScaledInstance(50, 40, Image.SCALE_SMOOTH); // Redimensionar
-                        imagen = new ImageIcon(nuevaImagen); // Asignar la imagen redimensionada
 
                         //Apartados de la opcion 
                         JButton CP = new JButton("Contratos con provedores");
